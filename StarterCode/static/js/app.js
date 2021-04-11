@@ -1,15 +1,16 @@
-var metadata;
 var samples = ("../data/samples.json")
 
-d3.json(samples).then(function(data) {
-    // console.log(data)
-    subj_ids = data.names;
+d3.json(samples).then(function(bdata) {
+    // console.log(bdata)
+    subj_ids = bdata.names;
     // console.log(subj_ids);
-    dmgrphcs = data.metadata;
-    otus = data.samples;
- 
+    dem_info = bdata.metadata;
+    // console.log(dem_info
+    otus = bdata.samples;
+    console.log(otus)
+
     subj_id_fill(subj_ids);
-    // console.log(dmgrphcs);
+    // console.log(dem_info);
     // console.log(otus);
     function subj_id_fill(subj_ids) {
         var chosenid = d3.select("#selDataset");
@@ -20,40 +21,5 @@ d3.json(samples).then(function(data) {
             optionrow.attr("value", subj_ids[i]);
      };
      }
-    });
 
-    // Clear any existing data before appending new data
-//     d3.select("#selDataset")
-//     .selectAll(null)
-//     .data(data.names)
-//     .enter()
-//     .append('option')
-//     .text(function (d) {return d;}) // text showed in the menu
-//     .attr("value", function (d) {return d;}) // value kept in the menu
-
-// //Dispolay the demographic info for the first element of the array
-// optionChanged(data.metadata[0].id);
-
-//     data = importedData;
-//     metadata = importedData.metadata;
-
-// function init() {
-//     // Grab a reference to the dropdown select element
-//     var selector = d3.select("#selDataset");
-  
-//     // Use the list of sample names to populate the select options
-//     d3.json("/names").then((sampleNames) => {
-//       sampleNames.forEach((sample) => {
-//         selector
-//           .append("option")
-//           .text(sample)
-//           .property("value", sample);
-//       });
-  
-//       // Use the first sample from the list to build the initial plots
-//       const firstSample = sampleNames[0];
-//       buildCharts(firstSample);
-//       buildMetadata(firstSample);
-//     });
-//   }
-
+  });
