@@ -5,9 +5,10 @@ d3.json(samples).then(function(bdata) {
     var subj_ids = bdata.names;
     // console.log(subj_ids);
     var dem_info = bdata.metadata;
-    // console.log(dem_info);
+    console.log(dem_info);
     var otus = bdata.samples;
     // console.log(otus)
+
 
     subj_id_fill(subj_ids);
     // console.log(dem_info);
@@ -21,36 +22,20 @@ d3.json(samples).then(function(bdata) {
             optionrow.attr("value", subj_ids[i]);
      };
      }
-    
-    function filterChosenID(dem_info) {
-      return dem_info;
-     }
 
-    var defaultID = dem_info.filter(obj => obj.id == idNo);
-    
-    console.log(defaultID);
-    
-     function dem_info_fill(dem_info) {
-      dem_panel = d3.select("#sample-metadata");
-      dem_panel.html("");
-      var idDem = dem_info.filter();
-      console.log(idDem)
-      // var chosenSample = idResults[0];
-      
-      
-      Object.entries(result).forEach(([key, value]) => {
-        PANEL.append("panel-body").text(`${key.toUpperCase()}: ${value}`);
-      });
+     dem_info_fill(dem_info);
+     function dem_info_fill(dem_info)  {
+      default_deminfo = d3.select("#sample-metadata").html(`
+      <p><strong>Id:</strong> ${dem_info[0].id}</p>
+      <p><strong>Ethnicity:</strong> ${dem_info[0].ethnicity}</p>
+      <p><strong>Gender:</strong> ${dem_info[0].gender}</p>
+      <p><strong>Age:</strong> ${dem_info[0].age}</p>
+      <p><strong>Location:</strong> ${dem_info[0].location}</p>
+      <p><strong>BB Type:</strong> ${dem_info[0].bbtype}</p>
+      <p><strong>WFREQ:</strong> ${dem_info[0].wfreq}</p>
+      `)}
 
-    }
+      
 
   });
-
-
-
-
-//     //  dem_info_fill(dem_info);
-//     // function dem_info_fill(dem_info) {
-//     //     return dem_info 
-//     // }
 
