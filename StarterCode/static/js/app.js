@@ -55,14 +55,14 @@ d3.json(samples).then(function(bdata) {
 
       var dhbData = [trace1];
 
-      var layout = {
+      var blayout = {
         margin: {
-          l: 100,
+          l: 150,
           r: 100,
         }
       };
 
-      Plotly.newPlot("bar", dhbData, layout);
+      Plotly.newPlot("bar", dhbData, blayout);
 
       var gdata = dem_info[0].wfreq;
       console.log(gdata)
@@ -82,8 +82,8 @@ d3.json(samples).then(function(bdata) {
         }
       ];
       
-      var layout = { width: 600, height: 400 };
-      Plotly.newPlot("gauge", data, layout);
+      var bblayout = { width: 500, height: 500 };
+      Plotly.newPlot("gauge", data, bblayout);
 
 
       // Bubble Chart
