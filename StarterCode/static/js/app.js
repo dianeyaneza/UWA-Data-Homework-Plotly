@@ -22,6 +22,7 @@ d3.json(samples).then(function(bdata) {
      };
      }
 
+    //  Info Panel
      dem_info_fill(dem_info);
      function dem_info_fill(dem_info)  {
       default_deminfo = d3.select("#sample-metadata").html(`
@@ -43,6 +44,7 @@ d3.json(samples).then(function(bdata) {
       // console.log(d_hbdata);
       // console.log(d_hblabes)
 
+      // Bar Chart
       var d_hbdata = otus[0].sample_values.slice(0, 10).reverse();
       // console.log(d_hbdata)
       var d_hbotu_ids = otus[0].otu_ids.slice(0, 10).reverse();
@@ -71,7 +73,7 @@ d3.json(samples).then(function(bdata) {
       var gdata = dem_info[0].wfreq;
       console.log(gdata)
 
-
+      // Gauge Chart
       var data = [
         {
           domain: { x: [0, 1], y: [0, 1] },
@@ -89,6 +91,34 @@ d3.json(samples).then(function(bdata) {
       Plotly.newPlot("gauge", data, layout);
 
 
+      // Bubble Chart
+      var all_otu_ids = otus[0].otu_ids
+      var all_sample_values = otus[0].sample_values
+      console.log(all_otu_ids)
+
+
+
+      var trace1 = {
+        x: all_otu_ids,
+        y: all_sample_values,
+        text: all_otu_ids,
+        mode: 'markers',
+        marker: {
+          color: ['rgb(191,233,115)', 'rgb(213,198,183)', 'rgb(44, 160, 101)', 'rgb(174,143,113)',  'rgb(213,198,183)', 'rgb(77,83,168)'],
+          opacity: [1, 0.8, 0.6, 0.4, 0.2],
+          size: all_sample_values
+        }
+      };
+      
+      var data = [trace1];
+      
+      var layout = {
+        showlegend: false,
+        height: 600,
+        width: 1200
+      };
+      
+      Plotly.newPlot("bubble", data, layout);
 
       // // part of data to input
       // var traceGauge = {
