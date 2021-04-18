@@ -1,4 +1,5 @@
 var samples = ("../data/samples.json")
+var i = 0
 
 d3.json(samples).then(function(bdata) {
   // console.log(bdata)
@@ -9,66 +10,73 @@ d3.json(samples).then(function(bdata) {
   var otus = bdata.samples;
   // console.log(otus)
 
+  // Set default values
+  var dem_data = dem_info[i];
+  // console.log(dem_info_panel)
+  var charts_data = otus[i];
+  // console.log(charts_data)
 
-  // Dropdown menu to select ID
+
+  // Dropdown menu to select ID working
   subj_id_fill(subj_ids);
   function subj_id_fill(subj_ids) {
-    var chosenid = d3.select("#selDataset");
-    chosenid.html("");
+    var sel_id = d3.select("#selDataset");
+    sel_id.html("");
     for (var i = 0; i < subj_ids.length; i++) {
-      var optionrow = chosenid.append("option");
+      var optionrow = sel_id.append("option");
           optionrow.text(subj_ids[i]);
           optionrow.attr("value", subj_ids[i]);
+          // console.log(sel_id)
    };
    }
 
-  // //  Event listener when new ID is selected not working yet
-  // id_selection = d3.select("#selDataset").on("change", optionChanged);
+    //  Event listener when new ID is selected not working yet
+    new_selection = d3.select("#selDataset").on("change", optionChanged);
+    function optionChanged() {
+      console.log(new_selection);
+      //Find the index of the id array matching the value of the selectedName
+      // i = dem_info.findIndex(x => x.id === parseInt(sel_id));
+      // //console.log(ind);
+      // //Populate Demogrpahic 
+      // populateDemoGraphic();
+      // //Display Horizontal Bar chart
+      // plotHorizontalBar();
+      // //Display Bubble chart
+      // plotBubbleChart();
+      // //Display Gauge chart
+      // displayGaugeChart();
+  }
+    
 
-  // // ON CHANGE: 'optionChanged' from dropdown selection
-  //   function optionChanged(id_no){
-  //     dem_info_fill(id_no);
-  //     charts_data(id_no);
-  //   };
-
-    // // New Info Panel try 
-    // function deminfo_fill(id_no){
-    //   d3.json(samples).then((bdata)=>{
-    //     var dem_info = bdata.metadata;
-    //     var result = dem_info.filter(dem => dem.id_no.toString() === id_no)[0];
-    //     var dem_panel = d3.select("#sample-metadata");
-    //     dem_panel.html("");
-    //     Object.defineProperties(result).forEach((key)=> {
-    //       dem_panel.append("h4").text(key[0].toUpperCase()+ ": " + key[1] + "\n");
-    //     });
-    //   });
-    // }
 
     //  Info Panel good
-    dem_info_fill(dem_info);
-    function dem_info_fill(dem_info)  {
-     default_deminfo = d3.select("#sample-metadata").html(`
-     <p><strong>Id:</strong> ${dem_info[0].id}</p>
-     <p><strong>Ethnicity:</strong> ${dem_info[0].ethnicity}</p>
-     <p><strong>Gender:</strong> ${dem_info[0].gender}</p>
-     <p><strong>Age:</strong> ${dem_info[0].age}</p>
-     <p><strong>Location:</strong> ${dem_info[0].location}</p>
-     <p><strong>BB Type:</strong> ${dem_info[0].bbtype}</p>
-     <p><strong>WFREQ:</strong> ${dem_info[0].wfreq}</p>
-     `)}
+    dem_info_fill(dem_data);
+    function dem_info_fill(dem_data)  {
+      dem_panel = d3.select("#sample-metadata").html(`
+      <p><strong>Id:</strong> ${dem_data.id}</p>
+      <p><strong>Ethnicity:</strong> ${dem_data.ethnicity}</p>
+      <p><strong>Gender:</strong> ${dem_data.gender}</p>
+      <p><strong>Age:</strong> ${dem_data.age}</p>
+      <p><strong>Location:</strong> ${dem_data.location}</p>
+      <p><strong>BB Type:</strong> ${dem_data.bbtype}</p>
+      <p><strong>WFREQ:</strong> ${dem_data.wfreq}</p>
+      `)}
 
-      // Bar Chart
-      var d_hbdata = otus[0].sample_values.slice(0, 10).reverse();
-      // console.log(d_hbdata)
-      var d_hbotu_ids = otus[0].otu_ids.slice(0, 10).reverse();
-      console.log(d_hbotu_ids)
-      var d_hblabels = d_hbotu_ids.map(d => "OTU " + d );
-      console.log(`${d_hblabels}`)
+
+    // Bar Chart
+    bar_chart_fill(charts_data)
+    function bar_chart_fill() {
+      var chart_values = charts_data.sample_values.slice(0, 10).reverse();
+      // console.log(chart_values)
+      var chart_ids = charts_data.otu_ids.slice(0, 10).reverse();
+      // console.log(chart_ids)
+      var chart_idlabels = chart_ids.map(d => "OTU " + d );
+      // console.log(`${chart_idlabels}`)
 
       var trace1 = {
         type: 'bar',
-        x: d_hbdata,
-        y: d_hblabels,
+        x: chart_values,
+        y: chart_idlabels,
         orientation: 'h'
       };
 
@@ -82,34 +90,15 @@ d3.json(samples).then(function(bdata) {
       };
 
       Plotly.newPlot("bar", dhbData, blayout);
+    }
 
-
-      // Gauge Chart
-
-      var gdata = dem_info[0].wfreq;
-      console.log(gdata)
-
-      var data = [
-        {
-          domain: { x: [0, 1], y: [0, 1] },
-          value: gdata,
-          title: { text: "<b>Belly Button Washing Frequency</b><br>Washes per Week"},
-          type: "indicator",
-          bar: { color: "blue" },
-          mode: "gauge+number",
-          delta: { reference: 400 },
-          gauge: { axis: { range: [null, 10] } }
-        }
-      ];
       
-      var bblayout = { width: 500, height: 500 };
-      Plotly.newPlot("gauge", data, bblayout);
-
-
-      // Bubble Chart
-      var all_otu_ids = otus[0].otu_ids
-      var all_sample_values = otus[0].sample_values
-      console.log(all_otu_ids)
+    // Bubble Chart
+    bubble_chart_fill(charts_data)
+    function bubble_chart_fill() {
+      var all_otu_ids = charts_data.otu_ids
+      var all_sample_values = charts_data.sample_values
+      // console.log(all_otu_ids)
 
       var trace1 = {
         x: all_otu_ids,
@@ -132,5 +121,31 @@ d3.json(samples).then(function(bdata) {
       };
       
       Plotly.newPlot("bubble", data, layout);
+    }
+
+
+    // Gauge Chart
+    gauge_chart_fill(dem_data)
+    function gauge_chart_fill(){
+      var gdata = dem_data.wfreq;
+      // console.log(gdata)
+
+      var data = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value: gdata,
+          title: { text: "<b>Belly Button Washing Frequency</b><br>Washes per Week"},
+          type: "indicator",
+          bar: { color: "blue" },
+          mode: "gauge+number",
+          delta: { reference: 400 },
+          gauge: { axis: { range: [null, 10] } }
+        }
+      ];
+      
+      var bblayout = { width: 500, height: 500 };
+      Plotly.newPlot("gauge", data, bblayout);
+    }
+
 
   });
