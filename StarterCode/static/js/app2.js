@@ -20,7 +20,7 @@ function init() {
     }); 
   };
 
-// event listener when new is is selected
+// event listener when a new id is selected
 function optionChanged(new_subjId){
     console.log(new_subjId);
     dem_info_fill(new_subjId);
@@ -139,5 +139,5 @@ function buildGauge(sample) {
     });
 }
 
-// run onload
+// run initialise data onload 
 init();
