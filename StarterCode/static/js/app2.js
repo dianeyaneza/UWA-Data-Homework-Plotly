@@ -1,5 +1,6 @@
 var samples = ("../data/samples.json")
 
+// initialise data on load
 function init() {
     var selectedId = d3.select("#selDataset");
     d3.json(samples).then((bdata) => {
@@ -10,7 +11,8 @@ function init() {
         .text(sample)
         .property("value", sample);
       });
-  
+      
+      // values to read on load based on default subject id 
       var def_subjId = subj_ids[0];
       dem_info_fill(def_subjId);
       buildCharts(def_subjId);
@@ -18,6 +20,7 @@ function init() {
     }); 
   };
 
+// event listener when new is is selected
 function optionChanged(new_subjId){
     console.log(new_subjId);
     dem_info_fill(new_subjId);
@@ -25,6 +28,7 @@ function optionChanged(new_subjId){
     buildGauge(new_subjId);
 }
 
+// function to fill panel info
 function dem_info_fill(sample)  {
     d3.json(samples).then((bdata) => {
         console.log(bdata)
@@ -47,6 +51,7 @@ function dem_info_fill(sample)  {
     });
 }
 
+// finction to build charts
 function buildCharts(sample) {
     d3.json(samples).then((bdata) => {
         var otus = bdata.samples;
@@ -61,6 +66,7 @@ function buildCharts(sample) {
         var chart_values = def_subjId.sample_values.slice(0, 10).reverse();
         console.log(chart_values)
 
+        // bar chart
         var trace1 = {
             type: 'bar',
             x: chart_values,
@@ -79,6 +85,7 @@ function buildCharts(sample) {
         
           Plotly.newPlot("bar", BC, blayout);
 
+        //   bubble chart
           var trace2 = {
             x: chart_ids,
             y: chart_values,
@@ -103,6 +110,7 @@ function buildCharts(sample) {
     });
 }
 
+// function to build gauge chart
 function buildGauge(sample) {
     d3.json(samples).then((bdata) => {
         var dem_info = bdata.metadata;
@@ -131,4 +139,5 @@ function buildGauge(sample) {
     });
 }
 
+// run onload
 init();
