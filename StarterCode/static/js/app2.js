@@ -51,7 +51,7 @@ function dem_info_fill(sample)  {
     });
 }
 
-// finction to build charts
+// function to build charts
 function buildCharts(sample) {
     d3.json(samples).then((bdata) => {
         var otus = bdata.samples;
