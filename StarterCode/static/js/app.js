@@ -1,6 +1,8 @@
 var samples = ("../data/samples.json")
 var i = 0
 
+
+
 d3.json(samples).then(function(bdata) {
   // console.log(bdata)
   var subj_ids = bdata.names;
@@ -30,12 +32,30 @@ d3.json(samples).then(function(bdata) {
    };
    }
 
+
+    // dropdown 2 try
+    // function init() {
+    //   var dropdownMenu = d3.select("#selDataset");
+    //   d3.json(samples).then((importedData) => {
+    //     var sel_id = subj_ids;
+    //     sel_id.forEach((id_no)=>{
+    //       dropdownMenu
+    //       .append('option')
+    //       .text(id_no)
+    //       .property('value');
+    //     });
+    //   });
+    // };
+    
+      
+
     //  Event listener when new ID is selected not working yet
-    new_selection = d3.select("#selDataset").on("change", optionChanged);
+    d3.selectAll("#selDataset").on("change", optionChanged);
     function optionChanged() {
-      console.log(new_selection);
+      var sel_id = d3.selectAll("#selectOption").node();
       //Find the index of the id array matching the value of the selectedName
-      // i = dem_info.findIndex(x => x.id === parseInt(sel_id));
+      dem_data.findIndex(x => x.id === parseInt(sel_id));
+
       // //console.log(ind);
       // //Populate Demogrpahic 
       // populateDemoGraphic();
@@ -46,12 +66,11 @@ d3.json(samples).then(function(bdata) {
       // //Display Gauge chart
       // displayGaugeChart();
   }
-    
 
 
     //  Info Panel good
     dem_info_fill(dem_data);
-    function dem_info_fill(dem_data)  {
+    function dem_info_fill(id)  {
       dem_panel = d3.select("#sample-metadata").html(`
       <p><strong>Id:</strong> ${dem_data.id}</p>
       <p><strong>Ethnicity:</strong> ${dem_data.ethnicity}</p>
@@ -146,6 +165,5 @@ d3.json(samples).then(function(bdata) {
       var bblayout = { width: 500, height: 500 };
       Plotly.newPlot("gauge", data, bblayout);
     }
-
 
   });
